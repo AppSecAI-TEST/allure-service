@@ -32,19 +32,27 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     private static final RequestMatcher PROTECT_MATCHER = new AntPathRequestMatcher("/**");
 
-    public static final String AUTH_HEADER = "x-auth-token";
+    private static final String AUTH_HEADER = "x-auth-token";
+
+    private static final String BEARER = "Bearer ";
 
     private JwtService jwtService;
 
-    protected JwtAuthenticationFilter() {
-        super(request -> !SKIP_MATCHER.matches(request) && PROTECT_MATCHER.matches(request));
+    protected JwtAuthenticationFilter(RequestMatcher skipMatcher) {
+        super(request -> {
+            if (skipMatcher != null) {
+                return !skipMatcher.matches(request) && PROTECT_MATCHER.matches(request);
+            }
+            return PROTECT_MATCHER.matches(request);
+        });
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String token = request.getHeader(AUTH_HEADER);
-        if (StringUtils.isEmpty(token)) throw new BadCredentialsException("bad token");
+        if (StringUtils.isEmpty(token) || !token.startsWith(BEARER)) throw new BadCredentialsException("bad token");
         try {
+            token = token.substring(BEARER.length());
             UserContext userContext = jwtService.parseAccessToken(token);
             Set<GrantedAuthority> authorities = new HashSet<>();
             authorities.add(new SimpleGrantedAuthority(userContext.getRole()));

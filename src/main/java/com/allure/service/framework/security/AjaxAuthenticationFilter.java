@@ -110,8 +110,8 @@ public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFi
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info(String.format("authentication success! user = %s", authentication.getName()));
         UserContext userContext = (UserContext) authentication.getPrincipal();
-        String accessToken = jwtService.createAccessToken(userContext);
-        String refreshToken = jwtService.createRefreshToken(accessToken);
+        String accessToken = jwtService.createAccessToken(userContext.getId(), userContext.getUsername(), userContext.getRole());
+        String refreshToken = jwtService.createRefreshToken(userContext.getUsername(), accessToken);
         Map<String, Object> map = new HashMap<>();
         map.put("id", userContext.getId());
         map.put("username", userContext.getUsername());

@@ -12,4 +12,5 @@ public interface UserService {
 
     User login(@NonNull String username, @NonNull String password) throws UsernameNotFoundException, BadCredentialsException;
 
+    User findByUsername(String username);
 }

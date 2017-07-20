@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -33,11 +34,11 @@ public class JwtService {
 
     private long refreshTokenExpirationSeconds;
 
-    public String createAccessToken(@NonNull UserContext context) {
-        Claims claims = Jwts.claims().setSubject(context.getUsername());
-        claims.put("id", context.getId());
-        claims.put("username", context.getUsername());
-        claims.put("role", context.getRole());
+    public String createAccessToken(Long userId, String username, String role) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("id", userId);
+        claims.put("username", username);
+        claims.put("role", role);
         LocalDateTime currentTime = LocalDateTime.now();
         return Jwts.builder()
                 .setClaims(claims)
@@ -49,8 +50,9 @@ public class JwtService {
                 .compact();
     }
 
-    public String createRefreshToken(@NonNull String accessToken) {
-        Claims claims = Jwts.claims().setSubject(accessToken);
+    public String createRefreshToken(String username, String accessToken) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("accessToken", accessToken);
         LocalDateTime currentTime = LocalDateTime.now();
         return Jwts.builder()
                 .setClaims(claims)
@@ -67,13 +69,14 @@ public class JwtService {
         String username = jws.getBody().getSubject();
         Long id = jws.getBody().get("id", Long.class);
         String role = jws.getBody().get("role", String.class);
-        UserContext context = new UserContext(id, username, role);
-        return context;
+        return new UserContext(id, username, role);
     }
 
-    public String parseRefreshToken(String refreshToken) {
+    public Pair<String, String> parseRefreshToken(String refreshToken) {
         Jws<Claims> jws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
-        return jws.getBody().getSubject();
+        String username = jws.getBody().getSubject();
+        String accessToken = jws.getBody().get("accessToken", String.class);
+        return Pair.of(username, accessToken);
     }
 
 }

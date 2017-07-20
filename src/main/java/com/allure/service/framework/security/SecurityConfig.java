@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -30,6 +32,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
 
+    private static final RequestMatcher[] SKIP_MATCHER_LIST = new RequestMatcher[]{
+            new AntPathRequestMatcher("/token", "POST"),
+            new AntPathRequestMatcher("/token/refresh", "POST"),
+            new AntPathRequestMatcher("/users", "POST")
+    };
+
+    private static final RequestMatcher SKIP_MATCHER = request -> {
+        for (RequestMatcher matcher : SKIP_MATCHER_LIST) {
+            if (matcher.matches(request)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     @Autowired
     public SecurityConfig(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
@@ -43,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -54,7 +72,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         http.cors().configurationSource(source);
 
-        http.addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests()
+                .requestMatchers(SKIP_MATCHER).permitAll();
+
+        //http.addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
@@ -87,7 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(SKIP_MATCHER);
         filter.setAuthenticationManager(authenticationManagerBean());
         filter.setJwtService(jwtService);
         return filter;
