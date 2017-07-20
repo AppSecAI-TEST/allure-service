@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: @profiles.active@
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+    converters:
+      preferred-json-mapper: jackson
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    locale: zh_CN
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: true
+    generate-ddl: true
+  data:
+    jpa:
+      repositories:
+        enabled: true
+banner:
+  location: banner.txt
+  charset: UTF-8
+server:
+  display-name: allure-service
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: logs
+      pattern: common
+      prefix: access_log
+      suffix: .log
+    uri-encoding: UTF-8
+    min-spare-threads: 10
+    max-threads: 10
+security:
+  basic:
+    enabled: false
+
+jwt.settings:
+  secret-key: xm8EV6Hy5RMFK4EEACIDAwQus
+  access-token-expiration-seconds: 0
+  refresh-token-expiration-seconds: 0
+  issuer: http://allure.com
+

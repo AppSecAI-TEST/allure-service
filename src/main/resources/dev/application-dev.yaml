@@ -1,0 +1,26 @@
+server:
+  address: 127.0.0.1
+  port: 8080
+  context-path: /allure-service-dev
+logging:
+  file: ./logs/allure-service-dev.log
+  level:
+    root: WARN
+    org.apache.tomcat: WARN
+    org.springframework.web: WARN
+    org.springframework: WARN
+    org.springframework.data: WARN
+    org.springframework.security: WARN
+    org.hibernate: WARN
+    org.hibernate.jpa: WARN
+    com.allure.service: DEBUG
+spring:
+  pid:
+    file: ./logs/allure-service-dev.pid
+  datasource:
+    url: jdbc:mysql://localhost:3306/allure-dev?characterEncoding=utf8&useSSL=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialize: true
