@@ -43,7 +43,7 @@ security:
 
 jwt.settings:
   secret-key: xm8EV6Hy5RMFK4EEACIDAwQus
-  access-token-expiration-seconds: 0
-  refresh-token-expiration-seconds: 0
+  access-token-expiration-seconds: 7200000   #2*60*60*1000
+  refresh-token-expiration-seconds: 36000000 #10*60*60*1000
   issuer: http://allure.com
 
