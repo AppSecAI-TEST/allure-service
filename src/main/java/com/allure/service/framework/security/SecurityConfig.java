@@ -75,7 +75,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .requestMatchers(SKIP_MATCHER).permitAll();
 
-        //http.addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
@@ -95,15 +94,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         response.addHeader("Content-Type", "application/json");
         response.getWriter().write(apiResponse == null ? "" : apiResponse.toJson());
         response.getWriter().flush();
-    }
-
-    @Bean
-    public AjaxAuthenticationFilter ajaxAuthenticationFilter() throws Exception {
-        AjaxAuthenticationFilter filter = new AjaxAuthenticationFilter();
-        filter.setAuthenticationManager(authenticationManagerBean());
-        filter.setJwtService(jwtService);
-        filter.setUserService(userService);
-        return filter;
     }
 
     @Bean

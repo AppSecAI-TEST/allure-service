@@ -28,8 +28,6 @@ import java.util.Set;
  */
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final RequestMatcher SKIP_MATCHER = new AntPathRequestMatcher("/login", "POST");
-
     private static final RequestMatcher PROTECT_MATCHER = new AntPathRequestMatcher("/**");
 
     private static final String AUTH_HEADER = "x-auth-token";

@@ -3,9 +3,7 @@ package com.allure.service.framework.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,9 +12,10 @@ import java.io.Serializable;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class BaseEntity implements Serializable{
+public abstract class BaseEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Version

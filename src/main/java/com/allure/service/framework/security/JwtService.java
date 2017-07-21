@@ -67,7 +67,7 @@ public class JwtService {
     public UserContext parseAccessToken(@NonNull String accessToken) {
         Jws<Claims> jws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken);
         String username = jws.getBody().getSubject();
-        Long id = jws.getBody().get("id", Long.class);
+        Long id = Long.valueOf(jws.getBody().get("id", Integer.class));
         String role = jws.getBody().get("role", String.class);
         return new UserContext(id, username, role);
     }

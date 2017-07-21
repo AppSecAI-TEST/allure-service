@@ -24,3 +24,6 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     initialize: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
