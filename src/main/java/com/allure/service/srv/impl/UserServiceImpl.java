@@ -26,6 +26,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by yang_shoulai on 7/20/2017.
@@ -36,6 +37,10 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncrypt passwordEncoder;
+
+    private final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z][a-zA-Z0-9_]{3,9}$");
+
+    private final Pattern PASSWORD_PATTERN = Pattern.compile("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncrypt passwordEncoder) {
@@ -64,13 +69,16 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(request.getUsername());
         if (user != null) throw new ApiException(MessageCode.User.USERNAME_EXIST,
                 String.format("username %s already exist", request.getUsername()));
+        if (!USERNAME_PATTERN.matcher(request.getUsername()).matches()) {
+            throw new ApiException(MessageCode.User.USERNAME_PATTERN, "username can only contain letters, numbers and underscores, start with letters, size between 4 and 10");
+        }
+        if (!PASSWORD_PATTERN.matcher(request.getPassword()).matches()) {
+            throw new ApiException(MessageCode.User.PASSWORD_PATTERN, "password can only contain letters and numbers,  size between 6 and 16");
+        }
         user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.User);
-        Date now = new Date();
-        user.setCreatedDate(now);
-        user.setLastModifiedDate(now);
         userRepository.save(user);
         return user;
     }

@@ -18,13 +18,23 @@ public interface MessageCode {
 
         //密码/令牌错误
         String BAD_CREDENTIALS = "bad_credentials";
+
         //用户名不存在
         String USERNAME_NOT_FOUND = "username_not_found";
+
+        //没有权限
+        String ACCESS_DENIED = "access_denied";
     }
 
     interface User {
 
         //用户名已经存在
         String USERNAME_EXIST = "user_exist";
+
+        //用户名格式不正确
+        String USERNAME_PATTERN = "username_pattern";
+
+        //密码格式不正确
+        String PASSWORD_PATTERN= "password_pattern";
     }
 }

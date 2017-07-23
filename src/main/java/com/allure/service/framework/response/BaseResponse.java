@@ -21,9 +21,12 @@ public abstract class BaseResponse<T> {
 
     private T result;
 
-    protected BaseResponse(@NonNull State state, T t) {
+    private String message;
+
+    protected BaseResponse(@NonNull State state, T t, String message) {
         this.state = state;
         this.result = t;
+        this.message = message;
     }
 
     public String toJson() {

@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher[] SKIP_MATCHER_LIST = new RequestMatcher[]{
             new AntPathRequestMatcher("/token", "POST"),
-            new AntPathRequestMatcher("/token/refresh", "POST"),
-            new AntPathRequestMatcher("/users", "POST")
+            new AntPathRequestMatcher("/token/refresh", "POST")/*,
+            new AntPathRequestMatcher("/users", "POST")*/
     };
 
     private static final RequestMatcher SKIP_MATCHER = request -> {

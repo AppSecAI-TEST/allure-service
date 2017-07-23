@@ -1,13 +1,16 @@
 package com.allure.service;
 
 import com.allure.service.framework.repository.BaseRepositoryFactoryBean;
+import com.allure.service.persistence.entity.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.system.ApplicationPidFileWriter;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaAuditing(auditorAwareRef = "auditingAwareProvider")
 @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class, basePackages = "com.allure.service")
 public class Application {
 

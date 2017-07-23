@@ -6,14 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Created by yang_shoulai on 7/20/2017.
  */
-@Getter
-@Setter
 @Entity
+@Setter
+@Getter
 @Table(name = "user")
 public class User extends BaseEntity {
 
@@ -26,13 +25,5 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
-
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "created_date", nullable = false)
-    private Date createdDate;
-
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "last_modified_date", nullable = false)
-    private Date lastModifiedDate;
 
 }

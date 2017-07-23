@@ -13,8 +13,6 @@ public class ErrorResponse<T> extends BaseResponse<T> {
 
     private String errorCode;
 
-    private String errorMsg;
-
     public ErrorResponse() {
         this(null);
     }
@@ -24,8 +22,7 @@ public class ErrorResponse<T> extends BaseResponse<T> {
     }
 
     public ErrorResponse(String errorCode, String errorMsg) {
-        super(State.Error, null);
+        super(State.Error, null, errorMsg);
         this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
     }
 }
