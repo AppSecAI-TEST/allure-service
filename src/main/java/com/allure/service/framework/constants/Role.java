@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum Role {
 
-    Admin("ROLE_ADMIN"), User("ROLE_USER");
+    Admin("ROLE_ADMIN"), User("ROLE_USER"), Anonymous("ROLE_ANONYMOUS");
 
     private String code;
 
@@ -23,6 +23,7 @@ public enum Role {
     public static Role of(String code) {
         if (Admin.code.equals(code)) return Admin;
         if (User.code.equals(code)) return User;
+        if (Anonymous.code.equals(code)) return Anonymous;
         return null;
     }
 }

@@ -36,7 +36,6 @@ public class UserController {
         return new SuccessResponse<>(userService.list(page, pageSize, username, role));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse create(@Valid @RequestBody UserCreateRequest request) {
         userService.create(request);
