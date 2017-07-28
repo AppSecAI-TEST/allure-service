@@ -8,7 +8,13 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class RefreshTokenResponse {
+public class AccessTokenCreateResponse {
+
+    private Long userId;
+
+    private String username;
+
+    private String role;
 
     private String accessToken;
 

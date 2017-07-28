@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Getter
 @Setter
-public class LoginRequest {
+public class AccessTokenCreateRequest {
 
     @NotEmpty
     private String username;

@@ -1,7 +1,6 @@
 package com.allure.service;
 
 import com.allure.service.framework.repository.BaseRepositoryFactoryBean;
-import com.allure.service.persistence.entity.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

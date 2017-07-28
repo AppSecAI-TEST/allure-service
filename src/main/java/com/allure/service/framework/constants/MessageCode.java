@@ -35,6 +35,21 @@ public interface MessageCode {
         String USERNAME_PATTERN = "username_pattern";
 
         //密码格式不正确
-        String PASSWORD_PATTERN= "password_pattern";
+        String PASSWORD_PATTERN = "password_pattern";
+    }
+
+    interface Category {
+
+        //分类编号已经存在
+        String CODE_EXIST = "code_exist";
+
+        //分类名称已经存在
+        String LABEL_EXIST = "label_exist";
+
+        //分类不存在
+        String NOT_FOUND = "category_not_found";
+
+        //分类已经被使用
+        String IN_USE = "category_in_use";
     }
 }

@@ -6,10 +6,10 @@ import com.allure.service.framework.response.ErrorResponse;
 import com.allure.service.framework.response.SuccessResponse;
 import com.allure.service.framework.security.JwtService;
 import com.allure.service.persistence.entity.User;
-import com.allure.service.request.LoginRequest;
-import com.allure.service.request.RefreshTokenRequest;
-import com.allure.service.response.LoginResponse;
-import com.allure.service.response.RefreshTokenResponse;
+import com.allure.service.request.AccessTokenCreateRequest;
+import com.allure.service.request.AccessTokenRefreshRequest;
+import com.allure.service.response.AccessTokenCreateResponse;
+import com.allure.service.response.AccessTokenRefreshResponse;
 import com.allure.service.srv.UserService;
 import io.jsonwebtoken.JwtException;
 import org.springframework.data.util.Pair;
@@ -41,10 +41,10 @@ public class TokenController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    public BaseResponse<AccessTokenCreateResponse> login(@Valid @RequestBody AccessTokenCreateRequest request) {
         try {
             User user = userService.login(request.getUsername(), request.getPassword());
-            LoginResponse response = new LoginResponse();
+            AccessTokenCreateResponse response = new AccessTokenCreateResponse();
             response.setUserId(user.getId());
             response.setRole(user.getRole().getCode());
             response.setUsername(user.getUsername());
@@ -60,7 +60,7 @@ public class TokenController {
     }
 
     @PostMapping(value = "/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse<RefreshTokenResponse> refresh(@Valid @RequestBody RefreshTokenRequest request) {
+    public BaseResponse<AccessTokenRefreshResponse> refresh(@Valid @RequestBody AccessTokenRefreshRequest request) {
         try {
             Pair<String, String> pair = jwtService.parseRefreshToken(request.getRefreshToken());
             if (StringUtils.isEmpty(pair.getFirst()) || !request.getAccessToken().equals(pair.getSecond())) {
@@ -70,7 +70,7 @@ public class TokenController {
             if (user == null) {
                 return new ErrorResponse<>(MessageCode.Global.USERNAME_NOT_FOUND, "username not found");
             }
-            RefreshTokenResponse response = new RefreshTokenResponse();
+            AccessTokenRefreshResponse response = new AccessTokenRefreshResponse();
             String accessToken = jwtService.createAccessToken(user.getId(), user.getUsername(), user.getRole().getCode());
             response.setAccessToken(accessToken);
             response.setRefreshToken(jwtService.createRefreshToken(user.getUsername(), accessToken));

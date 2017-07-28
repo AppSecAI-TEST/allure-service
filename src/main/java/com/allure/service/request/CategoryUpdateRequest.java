@@ -5,17 +5,15 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * Created by yang_shoulai on 7/20/2017.
+ * Created by yang_shoulai on 7/28/2017.
  */
 @Setter
 @Getter
-public class RefreshTokenRequest {
+public class CategoryUpdateRequest {
 
     @NotEmpty
-    private String accessToken;
+    private String code;
 
     @NotEmpty
-    private String refreshToken;
-
-
+    private String label;
 }

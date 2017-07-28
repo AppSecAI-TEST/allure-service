@@ -19,4 +19,5 @@ public interface UserService {
     User create(UserCreateRequest request);
 
     Page<User> list(int page, int pageSize, String username, String role);
+
 }
