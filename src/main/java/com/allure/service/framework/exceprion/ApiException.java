@@ -10,18 +10,21 @@ import lombok.Setter;
 @Getter
 public class ApiException extends RuntimeException {
 
-    private String code;
+    private String msgCode;
 
-    public ApiException(String code) {
-        this(code, null);
+    private Object[] msgArgs;
+
+    public ApiException(String msgCode, Object... msgArgs) {
+        this(msgCode, msgArgs, null);
     }
 
-    public ApiException(String code, String message) {
-        this(code, message, null);
+    public ApiException(String msgCode) {
+        this(msgCode, null, null);
     }
 
-    public ApiException(String code, String message, Throwable throwable) {
-        super(message, throwable);
-        this.code = code;
+    public ApiException(String msgCode, Object[] msgArgs, Throwable throwable) {
+        super(throwable);
+        this.msgCode = msgCode;
+        this.msgArgs = msgArgs;
     }
 }

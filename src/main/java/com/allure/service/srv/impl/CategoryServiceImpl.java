@@ -34,9 +34,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category create(CategoryCreateRequest request) {
         Category category = categoryRepository.findByCode(request.getCode());
-        if (category != null) throw new ApiException(MessageCode.Category.CODE_EXIST);
+        if (category != null) throw new ApiException(MessageCode.Category.CODE_EXIST, request.getCode());
         category = categoryRepository.findByLabel(request.getLabel());
-        if (category != null) throw new ApiException(MessageCode.Category.LABEL_EXIST);
+        if (category != null) throw new ApiException(MessageCode.Category.LABEL_EXIST, request.getLabel());
         category = new Category();
         category.setCode(request.getCode());
         category.setLabel(request.getLabel());
@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long id) {
         int count = blogRepository.countByCategoryId(id);
         if (count > 0) {
-            throw new ApiException(MessageCode.Category.IN_USE);
+            throw new ApiException(MessageCode.Category.IN_USE, id);
         }
         categoryRepository.delete(id);
     }
@@ -68,13 +68,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category update(Long id, CategoryUpdateRequest request) {
         Category category = categoryRepository.findOne(id);
-        if (category == null) throw new ApiException(MessageCode.Category.NOT_FOUND);
+        if (category == null) throw new ApiException(MessageCode.Category.NOT_FOUND, id);
         Category existed = categoryRepository.findByCode(request.getCode());
         if (!existed.getId().equals(category.getId()))
-            throw new ApiException(MessageCode.Category.CODE_EXIST);
+            throw new ApiException(MessageCode.Category.CODE_EXIST, request.getCode());
         existed = categoryRepository.findByLabel(request.getLabel());
         if (!existed.getId().equals(category.getId()))
-            throw new ApiException(MessageCode.Category.LABEL_EXIST);
+            throw new ApiException(MessageCode.Category.LABEL_EXIST, request.getLabel());
         category.setCode(request.getCode());
         category.setLabel(request.getLabel());
         categoryRepository.save(category);

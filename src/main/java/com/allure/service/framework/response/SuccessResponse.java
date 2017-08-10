@@ -8,18 +8,15 @@ import com.allure.service.framework.constants.State;
 public class SuccessResponse<T> extends BaseResponse<T> {
 
     public SuccessResponse() {
-        this(null, null);
-    }
-
-    public SuccessResponse(String message) {
-        this(null, message);
+        this(null, new Message[0]);
     }
 
     public SuccessResponse(T t) {
-        this(t, null);
+        this(t, new Message[0]);
     }
 
-    public SuccessResponse(T t, String message) {
-        super(State.Success, t, message);
+
+    public SuccessResponse(T t, Message... messages) {
+        super(State.Success, t, messages);
     }
 }

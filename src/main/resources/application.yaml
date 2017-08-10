@@ -22,6 +22,8 @@ spring:
     jpa:
       repositories:
         enabled: true
+  messages:
+    basename: i18n/messages
 banner:
   location: banner.txt
   charset: UTF-8

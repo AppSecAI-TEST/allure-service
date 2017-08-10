@@ -1,6 +1,7 @@
 package com.allure.service.controller;
 
 import com.allure.service.framework.constants.MessageCode;
+import com.allure.service.framework.controller.BaseController;
 import com.allure.service.framework.response.BaseResponse;
 import com.allure.service.framework.response.ErrorResponse;
 import com.allure.service.framework.response.SuccessResponse;
@@ -29,7 +30,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = "/token")
-public class TokenController {
+public class TokenController extends BaseController {
 
     private final UserService userService;
 
@@ -51,11 +52,11 @@ public class TokenController {
             String accessToken = jwtService.createAccessToken(user.getId(), user.getUsername(), user.getRole().getCode());
             response.setAccessToken(accessToken);
             response.setRefreshToken(jwtService.createRefreshToken(user.getUsername(), accessToken));
-            return new SuccessResponse<>(response);
+            return this.success(response);
         } catch (BadCredentialsException e) {
-            return new ErrorResponse<>(MessageCode.Global.BAD_CREDENTIALS, "bad credentials");
+            return this.error(MessageCode.Global.BAD_CREDENTIALS);
         } catch (UsernameNotFoundException e) {
-            return new ErrorResponse<>(MessageCode.Global.USERNAME_NOT_FOUND, "username not found");
+            return this.error(MessageCode.Global.USERNAME_NOT_FOUND);
         }
     }
 
@@ -64,19 +65,19 @@ public class TokenController {
         try {
             Pair<String, String> pair = jwtService.parseRefreshToken(request.getRefreshToken());
             if (StringUtils.isEmpty(pair.getFirst()) || !request.getAccessToken().equals(pair.getSecond())) {
-                return new ErrorResponse<>(MessageCode.Global.INVALID_TOKEN, "invalid token");
+                return this.error(MessageCode.Global.INVALID_TOKEN);
             }
             User user = userService.findByUsername(pair.getFirst());
             if (user == null) {
-                return new ErrorResponse<>(MessageCode.Global.USERNAME_NOT_FOUND, "username not found");
+                return this.error(MessageCode.Global.USERNAME_NOT_FOUND);
             }
             AccessTokenRefreshResponse response = new AccessTokenRefreshResponse();
             String accessToken = jwtService.createAccessToken(user.getId(), user.getUsername(), user.getRole().getCode());
             response.setAccessToken(accessToken);
             response.setRefreshToken(jwtService.createRefreshToken(user.getUsername(), accessToken));
-            return new SuccessResponse<>(response);
+            return this.success();
         } catch (JwtException e) {
-            return new ErrorResponse<>(MessageCode.Global.INVALID_TOKEN, "invalid token");
+            return this.error(MessageCode.Global.INVALID_TOKEN);
         }
     }
 }

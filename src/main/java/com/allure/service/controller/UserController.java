@@ -1,5 +1,7 @@
 package com.allure.service.controller;
 
+import com.allure.service.framework.constants.MessageCode;
+import com.allure.service.framework.controller.BaseController;
 import com.allure.service.framework.response.BaseResponse;
 import com.allure.service.framework.response.SuccessResponse;
 import com.allure.service.persistence.entity.User;
@@ -18,7 +20,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = "/users")
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserService userService;
 
@@ -39,6 +41,6 @@ public class UserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse create(@Valid @RequestBody UserCreateRequest request) {
         userService.create(request);
-        return new SuccessResponse("register success");
+        return success(null, MessageCode.Global.OPERATION_SUCCESS);
     }
 }

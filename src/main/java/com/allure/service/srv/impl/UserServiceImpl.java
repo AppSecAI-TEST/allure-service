@@ -66,13 +66,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(UserCreateRequest request) {
         User user = userRepository.findByUsername(request.getUsername());
-        if (user != null) throw new ApiException(MessageCode.User.USERNAME_EXIST,
-                String.format("username %s already exist", request.getUsername()));
+        if (user != null) throw new ApiException(MessageCode.User.USERNAME_EXIST, request.getUsername());
         if (!USERNAME_PATTERN.matcher(request.getUsername()).matches()) {
-            throw new ApiException(MessageCode.User.USERNAME_PATTERN, "username can only contain letters, numbers and underscores, start with letters, size between 4 and 10");
+            throw new ApiException(MessageCode.User.USERNAME_PATTERN);
         }
         if (!PASSWORD_PATTERN.matcher(request.getPassword()).matches()) {
-            throw new ApiException(MessageCode.User.PASSWORD_PATTERN, "password can only and must contain letters and numbers,  size between 6 and 16");
+            throw new ApiException(MessageCode.User.PASSWORD_PATTERN);
         }
         user = new User();
         user.setUsername(request.getUsername());

@@ -11,18 +11,15 @@ import lombok.Setter;
 @Getter
 public class ErrorResponse<T> extends BaseResponse<T> {
 
-    private String errorCode;
-
     public ErrorResponse() {
-        this(null);
+        this(new Message[0]);
     }
 
-    public ErrorResponse(String errorCode) {
-        this(errorCode, null);
+    public ErrorResponse(String errorCode, String msg) {
+        this(new Message(errorCode, msg));
     }
 
-    public ErrorResponse(String errorCode, String errorMsg) {
-        super(State.Error, null, errorMsg);
-        this.errorCode = errorCode;
+    public ErrorResponse(Message... messages) {
+        super(State.Error, null, messages);
     }
 }

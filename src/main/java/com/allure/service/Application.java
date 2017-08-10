@@ -7,6 +7,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.system.ApplicationPidFileWriter;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditingAwareProvider")
@@ -19,5 +22,6 @@ public class Application {
                 .listeners(new ApplicationPidFileWriter())
                 .build();
         application.run(args);
+
     }
 }
