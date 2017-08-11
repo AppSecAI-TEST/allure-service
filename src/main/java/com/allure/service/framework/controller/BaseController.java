@@ -1,8 +1,8 @@
 package com.allure.service.framework.controller;
 
 import com.allure.service.framework.constants.MessageCode;
-import com.allure.service.framework.response.BaseResponse;
 import com.allure.service.framework.response.ErrorResponse;
+import com.allure.service.framework.response.Message;
 import com.allure.service.framework.response.SuccessResponse;
 import com.allure.service.framework.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public abstract class BaseController {
 
     protected <T> SuccessResponse<T> success(T result, String msgCode, Object... args) {
         String message = resolveMessage(msgCode, args);
-        return new SuccessResponse<>(result, new BaseResponse.Message(msgCode, message));
+        return new SuccessResponse<>(result, new Message(msgCode, message));
     }
 
     protected <T> ErrorResponse<T> error() {
@@ -59,13 +59,13 @@ public abstract class BaseController {
         return LocaleContextHolder.getLocale();
     }
 
-    protected UserContext userContext() {
+    protected UserContext getUserContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication == null ? null : (UserContext) authentication.getPrincipal();
     }
 
     protected boolean authenticated() {
-        return userContext() != null;
+        return getUserContext() != null;
     }
 
 }

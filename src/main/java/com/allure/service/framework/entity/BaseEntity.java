@@ -1,5 +1,6 @@
 package com.allure.service.framework.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -19,6 +20,7 @@ import java.util.Date;
 @EntityListeners(value = {AuditingEntityListener.class})
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"version", "createdDate", "createdBy", "lastModifiedDate", "lastModifiedBy"})
 public abstract class BaseEntity implements Serializable {
 
     @Id

@@ -51,22 +51,4 @@ public abstract class BaseResponse<T> {
         }
     }
 
-    @Getter
-    @Setter
-    public static class Message {
-
-        private String code;
-
-        private String msg;
-
-        public Message(String code) {
-            this(code, null);
-        }
-
-        public Message(String code, String msg) {
-            this.code = code;
-            this.msg = msg;
-        }
-
-    }
 }

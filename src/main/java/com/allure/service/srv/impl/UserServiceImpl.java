@@ -37,10 +37,6 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncrypt passwordEncoder;
 
-    private final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z][a-zA-Z0-9_]{3,9}$");
-
-    private final Pattern PASSWORD_PATTERN = Pattern.compile("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncrypt passwordEncoder) {
         this.userRepository = userRepository;
@@ -67,12 +63,6 @@ public class UserServiceImpl implements UserService {
     public User create(UserCreateRequest request) {
         User user = userRepository.findByUsername(request.getUsername());
         if (user != null) throw new ApiException(MessageCode.User.USERNAME_EXIST, request.getUsername());
-        if (!USERNAME_PATTERN.matcher(request.getUsername()).matches()) {
-            throw new ApiException(MessageCode.User.USERNAME_PATTERN);
-        }
-        if (!PASSWORD_PATTERN.matcher(request.getPassword()).matches()) {
-            throw new ApiException(MessageCode.User.PASSWORD_PATTERN);
-        }
         user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));

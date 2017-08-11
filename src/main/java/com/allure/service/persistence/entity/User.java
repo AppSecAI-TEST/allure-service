@@ -2,6 +2,7 @@ package com.allure.service.persistence.entity;
 
 import com.allure.service.framework.constants.Role;
 import com.allure.service.framework.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class User extends BaseEntity {
     private String username;
 
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
     @Enumerated(value = EnumType.STRING)

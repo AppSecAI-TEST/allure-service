@@ -24,12 +24,6 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -41,7 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         http.cors().configurationSource(source);
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
+        filter.setAuthenticationManager(super.authenticationManager());
+        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
         http.headers().xssProtection().xssProtectionEnabled(true).block(true);
@@ -62,10 +58,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         response.getWriter().flush();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
-    }
 }

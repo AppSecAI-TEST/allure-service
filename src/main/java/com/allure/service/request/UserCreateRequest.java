@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by yang_shoulai on 7/21/2017.
  */
@@ -11,9 +13,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Setter
 public class UserCreateRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "NotEmpty.userCreateRequest.username")
+    @Pattern(regexp = "^[a-z][a-zA-Z0-9_]{3,9}$", message = "Pattern.userCreateRequest.username")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "NotEmpty.userCreateRequest.password")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$", message = "Pattern.userCreateRequest.password")
     private String password;
 }
