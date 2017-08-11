@@ -1,1 +1,1 @@
-INSERT INTO user (id, version, password, role, username, created_date, last_modified_date) VALUES (1, 0, '$2a$10$nT5iHwzDf19Ch.V5ZopFP.DsfY00BlwiGcCEegcDeqbOLbHsLilWW', 'Admin', 'admin', now(), now());
+INSERT INTO user (id, version, password, role, username, created_date, last_modified_date, created_by, last_modified_by) VALUES (1, 0, '$2a$10$nT5iHwzDf19Ch.V5ZopFP.DsfY00BlwiGcCEegcDeqbOLbHsLilWW', 'Admin', 'admin', now(), now(), 1, 1);

@@ -30,4 +30,5 @@ public class Blog extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "blog")
     private List<Tag> tags;
+
 }
